@@ -3,9 +3,12 @@ from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
+# from dotenv import load_dotenv
 
 import sys
 import os
+
+# load_dotenv()
 
 # Add app to PYTHONPATH
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/../app")
@@ -22,7 +25,7 @@ config = context.config
 fileConfig(config.config_file_name)
 
 # Override URL in alembic.ini with the one from config
-config.set_main_option("sqlalchemy.url", DATABASE_URL.replace("asyncpg", "psycopg2"))
+config.set_main_option("sqlalchemy.url", DATABASE_URL.replace("%", "%%"))
 
 target_metadata = Base.metadata
 
