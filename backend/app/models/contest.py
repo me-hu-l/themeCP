@@ -3,38 +3,44 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from app.config.database import Base
 
+
 class Contest(Base):
     __tablename__ = "contests"
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     topic = Column(String, nullable=False)  # 'mixed', 'dp', 'greedy', etc.
-    level = Column(Integer, nullable=False)
+    contest_level = Column(Integer, nullable=False)
+    contest_no = Column(Integer, nullable=True)  # Contest number for sorting
 
-    start_time = Column(DateTime, nullable=True)  # when contest starts
-    end_time = Column(DateTime, nullable=True)    # when contest ends
-    phase = Column(String, default="not_started")  # 'not_started', 'ongoing', 'finished'
+    R1= Column(Integer, nullable=True)  # Rating for problem 1
+    R2= Column(Integer, nullable=True)  # Rating for problem 2  
+    R3= Column(Integer, nullable=True)  # Rating for problem 3
+    R4= Column(Integer, nullable=True)  # Rating for problem 4
+    
+    T1 = Column(Float, nullable=True)  # Time taken for problem 1
+    T2 = Column(Float, nullable=True)  # Time taken for problem 2
+    T3 = Column(Float, nullable=True)  # Time taken for problem 3
+    T4 = Column(Float, nullable=True)  # Time taken for problem 4
 
-    # Problem info
-    problem1_link = Column(String)
-    problem1_rating = Column(Integer)
-    problem1_solved_at = Column(DateTime, nullable=True)
+    date = Column(String, nullable=True)  # Readable date
+    performance = Column(Float, nullable=True)  # maybe 'success' or 'fail'
+    rating = Column(Float, nullable=True)  # rating after this contest
+    delta = Column(Float, nullable=True)  # rating change
+    
+    contestId1 = Column(Integer, nullable=True)  # Contest ID for problem 1
+    contestId2 = Column(Integer, nullable=True)  # Contest ID for problem 2
+    contestId3 = Column(Integer, nullable=True)  # Contest ID for problem 3
+    contestId4 = Column(Integer, nullable=True)  # Contest ID for problem 4
 
-    problem2_link = Column(String)
-    problem2_rating = Column(Integer)
-    problem2_solved_at = Column(DateTime, nullable=True)
+    index1 = Column(String, nullable=True)  # Index for problem 1
+    index2 = Column(String, nullable=True)  # Index for problem 2
+    index3 = Column(String, nullable=True)  # Index for problem 3
+    index4 = Column(String, nullable=True)  # Index for problem 4
 
-    problem3_link = Column(String)
-    problem3_rating = Column(Integer)
-    problem3_solved_at = Column(DateTime, nullable=True)
-
-    problem4_link = Column(String)
-    problem4_rating = Column(Integer)
-    problem4_solved_at = Column(DateTime, nullable=True)
-
-    performance = Column(Float)  # maybe 'success' or 'fail'
-    local_rating = Column(Float)  # rating after this contest
-    delta = Column(Float)         # rating change
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-
+    
+    
+    
     user = relationship("User", back_populates="contests")
+

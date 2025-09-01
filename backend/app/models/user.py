@@ -16,3 +16,8 @@ class User(Base):
     codeforces_handle = Column(String, unique=True, index=True)
 
     contests = relationship("Contest", back_populates="user", cascade="all, delete")
+
+    created_duels = relationship("Duel", foreign_keys="[Duel.creator_id]", back_populates="creator", cascade="all, delete")
+    opponent_duels = relationship("Duel", foreign_keys="[Duel.opponent_id]", back_populates="opponent", cascade="all, delete")
+
+    duel_progress = relationship("DuelProgress",foreign_keys="[DuelProgress.user_id]" , back_populates="user", cascade="all, delete")

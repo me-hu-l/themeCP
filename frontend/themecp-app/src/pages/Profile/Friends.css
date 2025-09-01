@@ -1,0 +1,42 @@
+.friends-list-container {
+    margin-top: 25px;
+    width: 90%;
+    margin-left: 50px;
+}
+
+.friends-list-table {
+    margin-top: 10px;
+    border: 2px solid black;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 0.4fr 1.6fr 1fr;
+}
+
+.friends-list-table-data {
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 0.4fr 1.6fr 1fr;
+}
+.friends-list-table-data div {
+    font-weight: lighter;
+}
+@media (max-width: 1400px) {
+    .friends-list-table {
+        grid-template-columns: 0.4fr 1.6fr 1fr;
+    }
+    .friends-list-table-data {
+        grid-template-columns: 0.4fr 1.6fr 1fr;
+    }
+}
+@media (max-width: 730px) {
+    .friends-list-container {
+        margin-top: 15px;
+        width: 100%;
+        margin-left: 1px;
+    }
+}

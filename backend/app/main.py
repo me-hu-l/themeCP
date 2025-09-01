@@ -3,7 +3,7 @@ from . import models
 from .config.database import engine
 from app.api import user
 from app.api import contest
-from app.api import auth_google
+from app.api import auth_google, levels, friends, duels
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
@@ -48,3 +48,6 @@ async def read_root():
 app.include_router(user.router)
 app.include_router(contest.router)
 app.include_router(auth_google.router)
+app.include_router(levels.router)
+app.include_router(friends.router)
+app.include_router(duels.router)

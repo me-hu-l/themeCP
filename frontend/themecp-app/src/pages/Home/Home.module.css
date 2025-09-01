@@ -1,0 +1,182 @@
+.makeRed {
+  color: red;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.wrapper {
+  color: #000;
+  margin-top: 250px;
+  margin-bottom: 320px;
+  height: 100px;
+  /* This part is important for centering */
+  display: grid;
+  place-items: center;
+}
+
+.typingDemo {
+  width: 22ch;
+  animation: typing 2s steps(22), blink 0.5s step-end infinite alternate;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 4em;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.getStartedButton {
+  margin-top: 80px;
+  border: none;
+  background-color: black;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.getStartedButton:hover {
+  opacity: 0.8;
+}
+
+.getStartedButton:active {
+  opacity: 0.5;
+}
+
+.descriptionBox {
+  color: #000;
+  border-radius: 20px;
+  height: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 40px;
+}
+
+.title {
+  color: black;
+  border: 3px black solid;
+  border-radius: 20px;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 45px;
+  width: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.description {
+  margin-left: 10px;
+  border: 3px black solid;
+  border-radius: 20px;
+  font-family: monospace;
+  font-size: 30px;
+  padding: 50px;
+  width: 65%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title2 {
+  color: black;
+  border: 3px black solid;
+  border-radius: 20px;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 45px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.description2 {
+        color: #000;
+  border: 3px black solid;
+  border-radius: 20px;
+  margin-top: 10px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.description2 li {
+  font-family: monospace;
+  font-size: 25px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.discordButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+  margin-left: 15px;
+  border: none;
+  background-color: #5562ea;
+  color: white;
+  height: 40px;
+  border-radius: 20px;
+  width: 150px;
+  cursor: pointer;
+  padding-left: 2px;
+  transition: 0.15s;
+}
+
+.discordButton:hover {
+  opacity: 0.8;
+}
+
+.discordButton:active {
+  background-color: white;
+  color: #5562ea;
+}
+
+/* @media (max-width: 730px) {
+  * {
+    font-size: 8px;
+  }
+
+  .title {
+    width: 100%;
+    font-size: 35px;
+    margin-bottom: 10px;
+  }
+
+  .descriptionBox {
+    width: 100%;
+    display: block;
+  }
+
+  .title2 {
+    font-size: 30px;
+    width: 290;
+    margin-top: 190px;
+  }
+
+  .getStartedButton {
+    font-size: 20px;
+  }
+
+  .discordButton {
+    font-size: 20px;
+  }
+} */

@@ -15,11 +15,13 @@ class UserUpdate(BaseModel):
     codeforces_handle: Optional[str] = None
 
 class UserResponse(BaseModel):
-    id: int
-    username: str
-    email: EmailStr
-    codeforces_handle: Optional[str]
-    created_at: datetime
+    id: Optional[int]=None
+    username: Optional[str]=None
+    email: Optional[EmailStr]=None
+    codeforces_handle: Optional[str]=None
+    created_at: Optional[datetime]=None
+    rating: Optional[int]=None
+    max_rating: Optional[int]=None
 
     class Config:
         from_attributes = True
