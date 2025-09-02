@@ -14,11 +14,23 @@ const StartContest = () => {
         const { user_profile } = useProfile();
 //   const navigate = useNavigate();
 
-  let solved_data = JSON.parse(localStorage.getItem('solve_data')) || [true,false,false,false,false];
-  const [solved, setSolved] = useState(solved_data);
+  // let solved_data = JSON.parse(localStorage.getItem('solve_data')) || [true,false,false,false,false];
+  // const [solved, setSolved] = useState(solved_data);
+  const [solved, setSolved] = useState([true,false,false,false,false]);
   const [endContest, setEndContest] = useState(false);
 
-  let data = JSON.parse(localStorage.getItem('data'));
+  // let data = JSON.parse(localStorage.getItem('data'));
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const solved_data = JSON.parse(localStorage.getItem('solve_data')) || [true, false, false, false, false];
+      setSolved(solved_data);
+
+      const localData = JSON.parse(localStorage.getItem('data'));
+      setData(localData);
+    }
+  }, []);
 
   useEffect(() => {
     const twoMinute = localStorage.getItem('2min-endTime');

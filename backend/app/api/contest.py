@@ -98,6 +98,8 @@ async def create_contest(
         delta = int(delta)
         rating = prev_rating + delta
 
+    performance = int(performance)
+
     # Create a new contest
     new_contest = Contest(
         user_id=current_user.id,
