@@ -48,7 +48,7 @@ const Duel = ({id}) =>{
                         console.log('get_opponent_profile');
                         // console.log("Fetching opponent profile...");
                         console.log('current duel: ', currentDuel);
-                        const opponent_id = (currentDuel.creator_id === user_profile.id)? currentDuel?.opponent_id : currentDuel?.creator_id;
+                        const opponent_id = (currentDuel.creator.id === user_profile.id)? currentDuel?.opponent.id : currentDuel?.creator.id;
                         const response = await fetch(`${backend_url}/api/users/profile/${opponent_id}`, {
                                 method: 'GET',
                                 credentials: 'include',
@@ -100,8 +100,8 @@ const Duel = ({id}) =>{
         }, [currentDuel]); // This effect runs when `currentDuel` changes.
 
         useEffect(() => {
-                if (currentDuel && currentDuel.opponent_id) {
-                        get_opponent_profile(currentDuel.opponent_id);
+                if (currentDuel && currentDuel.opponent.id) {
+                        get_opponent_profile();
                 }
         }, [currentDuel]);
 
