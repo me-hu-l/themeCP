@@ -139,7 +139,7 @@ const CreateDuel = () => {
                 try {
                         let opponent_id = 1;
                         friendsList.forEach((friend) => {
-                                if (friend.email === selectFriend) {
+                                if (friend.codeforces_handle === selectFriend) {
                                         opponent_id = friend.id;
                                 }
                         });
