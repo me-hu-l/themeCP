@@ -57,7 +57,7 @@ async def google_callback(request: Request, db: AsyncSession = Depends(get_db)):
     # Issue your normal JWT
     jwt_token = create_access_token({"sub": str(user.id)})
 
-    frontend_url = os.getenv("FRONTEND_URL") or "http://localhost:3000"
+    frontend_url = os.getenv("FRONTEND_URL")
     resp = RedirectResponse(url=f"{frontend_url}/")
 
     resp.set_cookie(
