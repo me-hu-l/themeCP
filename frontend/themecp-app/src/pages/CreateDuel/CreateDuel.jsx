@@ -168,7 +168,7 @@ const CreateDuel = () => {
                                 // router.push(`/duel/${data.duel_id}`);
                         } else {
                                 setLoading(false);
-                                alert(data.message || 'Failed to create duel. Please try again.');
+                                alert(data.detail || 'Failed to create duel. Please try again.');
                         }
                 } catch (error) {
                         setLoading(false);
@@ -197,7 +197,7 @@ const CreateDuel = () => {
                                 alert('Duel invite canceled successfully.');
                         } else {
                                 setLoading(false);
-                                alert(data.message || 'Failed to cancel duel. Please try again.');
+                                alert(data.detail || 'Failed to cancel duel. Please try again.');
                         }
                 } catch (error) {
                         setLoading(false);
