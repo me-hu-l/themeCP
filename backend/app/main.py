@@ -14,8 +14,9 @@ app = FastAPI()
 
 # CORS settings
 origins = [
-    # "http://localhost:3000",  # Local frontend
-    "*"
+    "http://localhost:3000",  # Local frontend
+    # "*"
+    "https://themecp.onrender.com/",
     # Add your production frontend URL here when you deploy:
     # "https://your-frontend-domain.com",
 ]
