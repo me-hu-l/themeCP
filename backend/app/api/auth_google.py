@@ -65,7 +65,7 @@ async def google_callback(request: Request, db: AsyncSession = Depends(get_db)):
         value=jwt_token,
         httponly=True,
         secure=True,   # True in production (HTTPS)
-        samesite="lax", # or "none" with secure=True if cross-site
+        samesite="none", # or "none" with secure=True if cross-site
         max_age=60*60*24*7,
         path="/"
     )
