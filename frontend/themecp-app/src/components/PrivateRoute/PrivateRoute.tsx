@@ -12,6 +12,7 @@ export default function PrivateRoute({ children }: { children: React.ReactNode }
     if (!loading && !isAuth) {
       console.log("User is not authenticated, redirecting to login.", isAuth, loading);
       router.push("/login");
+      console.log("User is not authenticated, redirecting to login.", isAuth, loading);
     }
   }, [isAuth, loading, router]);
 

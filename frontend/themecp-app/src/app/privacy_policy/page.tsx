@@ -1,3 +1,5 @@
+'use client';
+
 import Navbar from "@/components/Navbar/Navbar";
 import P from "@/pages/PrivacyPolicy/P";
 

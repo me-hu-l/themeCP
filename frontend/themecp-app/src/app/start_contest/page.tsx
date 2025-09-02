@@ -1,3 +1,5 @@
+'use client';
+
 import Navbar from "@/components/Navbar/Navbar";
 import LoginPage from "@/pages/LoginPage/LoginPage";
 import Contest from "@/pages/Contest/Contest";
