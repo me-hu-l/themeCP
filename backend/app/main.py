@@ -16,7 +16,7 @@ app = FastAPI()
 origins = [
     "http://localhost:3000",  # Local frontend
     # "*"
-    "https://themecp.onrender.com/",
+    "https://theme-cp-v2.vercel.app",
     # Add your production frontend URL here when you deploy:
     # "https://your-frontend-domain.com",
 ]
