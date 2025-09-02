@@ -2,8 +2,10 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { useProfile } from '@/context/ProfileContext/ProfileContext';
+import useRouter from 'next/navigation';
 
 const AddHandle = ({id}) => {
+    const router = useRouter();
 
     const { user_profile } = useProfile();
             const [handle, setHandle] = useState(null);
@@ -71,8 +73,9 @@ const AddHandle = ({id}) => {
                 }
                 else {
                     alert('Handle Verification Failed. TRY AGAIN');
-                    const frontend_url = 'http://localhost:3000'; // Change this to your frontend URL
-                    window.location.href = `${frontend_url}/profile/${id}`;
+                    router.push(`/profile/${id}`);
+                    // const frontend_url = 'http://localhost:3000'; // Change this to your frontend URL
+                    // window.location.href = `${frontend_url}/profile/${id}`;
                 }
                 setChecking(false);
             };
@@ -97,14 +100,15 @@ const AddHandle = ({id}) => {
                 const frontend_url = 'http://localhost:3000';
                 if(res.status===400 || res.status===500 || res.status===403 || res.status===404) {
                         alert('couldnot add handle');
-                        window.location.href = `${frontend_url}/profile/${id}`;
+                        router.push(`/profile/${id}`);
+                        // window.location.href = `${frontend_url}/profile/${id}`;
                 }
                 else if (res['message'] === 'handle already taken by another user') {
                     alert('Handle Already Exists');
-                    window.location.href = `${frontend_url}/profile/${id}`;
+                    router.push(`/profile/${id}`);
                 } else {
                     alert('successful');
-                    window.location.href = `${frontend_url}/profile/${id}`;
+                    router.push(`/profile/${id}`);
                 }
             }
             addHandle();
