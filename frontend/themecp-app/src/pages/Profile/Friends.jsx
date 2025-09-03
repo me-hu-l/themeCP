@@ -38,7 +38,9 @@ const Friends = ({id}) => {
         // Update the local state to remove the friend from the list
         setFriends(user_friends.filter(friend => friend.id !== Number(friendId)));
       } else {
-        alert('Failed to remove friend');
+        const errorData = await response.json();
+        console.error('API error:', errorData.detail || errorData.message || errorData);
+        alert(errorData.detail || 'couldn\'t remove friend');
       }
     } catch (error) {
       console.error('Error removing friend:', error);
@@ -73,6 +75,33 @@ const Friends = ({id}) => {
         }
     }
 
+    const getPerformanceColor = (data) => {
+    const rating = parseInt(data);
+    if (rating > 0 && rating < 1200) {
+        return '#808080';
+    } else if (rating >= 1200 && rating < 1400) {
+        return '#008000';
+    } else if (rating >= 1400 && rating < 1600) {
+        return '#03A89E';
+    } else if (rating >= 1600 && rating < 1900) {
+        return '#0000FF';
+    } else if (rating >= 1900 && rating < 2100) {
+        return '#AA00AA';
+    } else if (rating >= 2100 && rating < 2300) {
+        return '#FF8C00';
+    } else if (rating >= 2300 && rating < 2400) {
+        return '#FF8C00';
+    } else if (rating >= 2400 && rating < 2600) {
+        return '#FF0000';
+    } else if (rating >= 2600 && rating < 3000) {
+        return '#FF0000';
+    } else if (rating >= 3000) {
+        return '#FF0000';
+    } else {
+        return 'black';
+    }
+  }
+
   return (
   <div className="p-6">
     <h2 className="text-xl font-bold mb-4">Friends</h2>
@@ -91,7 +120,7 @@ const Friends = ({id}) => {
             <tr key={index} className="hover:bg-gray-50">
               <td className="border border-gray-300 px-4 py-2">{index +1}</td>
               <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
-                <Link href={`/profile/${item.id}`} className="text-black-700 hover:underline font-bold" style={{color: getBackgroundColor(item.rating)}}>
+                <Link href={`/profile/${item.id}`} className="text-black-700 hover:underline font-bold" style={{color: getPerformanceColor(item.rating)}}>
                   {item.codeforces_handle}
                 </Link>
               </td>

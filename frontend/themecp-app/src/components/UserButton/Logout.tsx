@@ -13,7 +13,7 @@ const Logout = () => {
 
   const handleClick = async () => {
     try {
-      await axios.post(
+      const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/users/logout`,
         {},
         { withCredentials: true }
@@ -21,7 +21,19 @@ const Logout = () => {
       setIsAuth(false);
       alert("Logged out successfully");
       router.push("/");
-    } catch (error) {
+    } catch (error:any) {
+      // Network error (no response)
+      if(!error.response){
+        alert("Network error. Please try again later.");
+      }else{
+        // Backend responded with error status
+        const detail =
+          error.response.data?.detail ||
+          error.response.data?.message ||
+          JSON.stringify(error.response.data) ||
+          "Unknown error";
+        alert(`Logout failed: ${detail}`);
+      }
       setIsAuth(true);
       router.push("/");
     }

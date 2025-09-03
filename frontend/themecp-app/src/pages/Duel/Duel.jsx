@@ -30,7 +30,10 @@ const Duel = ({id}) =>{
                                 credentials: 'include',
                         });
                         if (!response.ok) {
-                                throw new Error('Network response was not ok');
+                                const errorData = await response.json();
+                                console.error('API error:', errorData.detail || errorData.message || errorData);
+                                // alert(errorData.detail || 'An error occurred');
+                                return;
                         }
                         const data = await response.json();
                         console.log(data);
@@ -54,7 +57,10 @@ const Duel = ({id}) =>{
                                 credentials: 'include',
                         });
                         if (!response.ok) {
-                                throw new Error('Network response was not ok');
+                                const errorData = await response.json();
+                                console.error('API error:', errorData.detail || errorData.message || errorData);
+                                // alert(errorData.detail || 'An error occurred');
+                                return;
                         }
                         const data = await response.json();
                         setOpponentProfile(data);
@@ -70,7 +76,10 @@ const Duel = ({id}) =>{
                                         credentials: 'include',
                                 });
                                 if (!response.ok) {
-                                        throw new Error('Network response was not ok');
+                                        const errorData = await response.json();
+                                        console.error('API error:', errorData.detail || errorData.message || errorData);
+                                        // alert(errorData.detail || 'An error occurred');
+                                        return;
                                 }
                                 const data = await response.json();
                                 setDuelState(data);
@@ -235,6 +244,32 @@ const Duel = ({id}) =>{
                 }
         }, [endDuel]);
 
+
+            const getBackgroundColor = (data) => {
+                const rating = parseInt(data);
+                if (rating >= 0 && rating < 1200) {
+                        return '#CCCCCC';
+                } else if (rating >= 1200 && rating < 1400) {
+                        return '#77FF77';
+                } else if (rating >= 1400 && rating < 1600) {
+                        return '#77DDBB';
+                } else if (rating >= 1600 && rating < 1900) {
+                        return '#AAAAFF';
+                } else if (rating >= 1900 && rating < 2100) {
+                        return '#FF88FF';
+                } else if (rating >= 2100 && rating < 2300) {
+                        return '#FFCC88';
+                } else if (rating >= 2300 && rating < 2400) {
+                        return '#FFBB55';
+                } else if (rating >= 2400 && rating < 2600) {
+                        return '#FF7777';
+                } else if (rating >= 2600 && rating < 3000) {
+                        return '#FF3333';
+                } else if (rating >= 3000) {
+                        return '#AA0000';
+                }
+        }
+
         return (
         <div className="overflow-x-auto">
         {(currentDuel && opponentProfile && duelState) ? (
@@ -243,7 +278,7 @@ const Duel = ({id}) =>{
                 <thead className="bg-gray-100">
                 <tr>
                 <th className="border border-gray-300 px-4 py-2">Participant</th>
-                <th className="border border-gray-300 px-4 py-2">
+                <th className="border border-gray-300 px-4 py-2" style={{backgroundColor: getBackgroundColor(currentDuel.R1)}}>
                         <a
                         href={`https://codeforces.com/problemset/problem/${currentDuel.contestId1}/${currentDuel.index1}`}
                         target="_blank"
@@ -255,7 +290,7 @@ const Duel = ({id}) =>{
                         <br />
                         <span className="text-xs text-gray-500">/ {currentDuel.R1}</span>
                 </th>
-                <th className="border border-gray-300 px-4 py-2">
+                <th className="border border-gray-300 px-4 py-2" style={{backgroundColor: getBackgroundColor(currentDuel.R2)}}>
                         <a
                         href={`https://codeforces.com/problemset/problem/${currentDuel.contestId2}/${currentDuel.index2}`}
                         target="_blank"
@@ -267,7 +302,7 @@ const Duel = ({id}) =>{
                         <br />
                         <span className="text-xs text-gray-500">/ {currentDuel.R2}</span>
                 </th>
-                <th className="border border-gray-300 px-4 py-2">
+                <th className="border border-gray-300 px-4 py-2" style={{backgroundColor: getBackgroundColor(currentDuel.R3)}}>
                         <a
                         href={`https://codeforces.com/problemset/problem/${currentDuel.contestId3}/${currentDuel.index3}`}
                         target="_blank"
@@ -279,7 +314,7 @@ const Duel = ({id}) =>{
                         <br />
                         <span className="text-xs text-gray-500">/ {currentDuel.R3}</span>
                 </th>
-                <th className="border border-gray-300 px-4 py-2">
+                <th className="border border-gray-300 px-4 py-2" style={{backgroundColor: getBackgroundColor(currentDuel.R4)}}>
                         <a
                         href={`https://codeforces.com/problemset/problem/${currentDuel.contestId4}/${currentDuel.index4}`}
                         target="_blank"
@@ -296,33 +331,39 @@ const Duel = ({id}) =>{
                 <tbody>
                 <tr className="hover:bg-gray-50">
                 <td className="border border-gray-300 px-4 py-2 font-medium">
-                        <Link href={`/profile/${user_profile.id}`} className="text-black-700 hover:underline font-bold">
+                        <Link href={`/profile/${user_profile.id}`} className="text-black-700 hover:underline font-bold" style={{color: getBackgroundColor(user_profile.rating)}}>
                         {user_profile.codeforces_handle}
                         </Link>
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                <td className={`border border-gray-300 px-4 py-2 ${duelState.problems[user_profile.id][0]?.score > 0 ? 'text-green-600' : ''}`}>
+                        {duelState.problems[user_profile.id][0]?.score ?? 0}
+                </td>
+                <td className={`border border-gray-300 px-4 py-2 ${duelState.problems[user_profile.id][1]?.score > 0 ? 'text-green-600' : ''}`}>
                         {duelState.problems[user_profile.id][1]?.score ?? 0}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                <td className={`border border-gray-300 px-4 py-2 ${duelState.problems[user_profile.id][2]?.score > 0 ? 'text-green-600' : ''}`}>
                         {duelState.problems[user_profile.id][2]?.score ?? 0}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                <td className={`border border-gray-300 px-4 py-2 ${duelState.problems[user_profile.id][3]?.score > 0 ? 'text-green-600' : ''}`}>
                         {duelState.problems[user_profile.id][3]?.score ?? 0}
                 </td>
                 </tr>
                 <tr className="hover:bg-gray-50">
                 <td className="border border-gray-300 px-4 py-2 font-medium">
-                        <Link href={`/profile/${opponentProfile.id}`} className="text-black-700 hover:underline font-bold">
+                        <Link href={`/profile/${opponentProfile.id}`} className="text-black-700 hover:underline font-bold" style={{color: getBackgroundColor(opponentProfile.rating)}}>
                                 {opponentProfile.codeforces_handle}
                         </Link>
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                <td className={`border border-gray-300 px-4 py-2 ${duelState.problems[opponentProfile.id][0]?.score > 0 ? 'text-green-600' : ''}`}>
+                        {duelState.problems[opponentProfile.id][0]?.score ?? 0}
+                </td>
+                <td className={`border border-gray-300 px-4 py-2 ${duelState.problems[opponentProfile.id][1]?.score > 0 ? 'text-green-600' : ''}`}>
                         {duelState.problems[opponentProfile.id][1]?.score ?? 0}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                <td className={`border border-gray-300 px-4 py-2 ${duelState.problems[opponentProfile.id][2]?.score > 0 ? 'text-green-600' : ''}`}>
                         {duelState.problems[opponentProfile.id][2]?.score ?? 0}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                <td className={`border border-gray-300 px-4 py-2 ${duelState.problems[opponentProfile.id][3]?.score > 0 ? 'text-green-600' : ''}`}>
                         {duelState.problems[opponentProfile.id][3]?.score ?? 0}
                 </td>
                 </tr>

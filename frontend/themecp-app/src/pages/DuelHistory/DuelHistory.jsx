@@ -17,7 +17,12 @@ const DuelHistory = ({ id }) => {
         const res = await fetch(`${backend_url}/api/duels/${id}/history`, {
           credentials: "include",
         });
-        if (!res.ok) throw new Error("Failed to fetch duel history");
+        if (!res.ok){
+          const errorData = await res.json();
+          console.error('API error:', errorData.detail || errorData.message || errorData);
+          alert(errorData.detail || 'An error occurred');
+          return;
+        }
         const data = await res.json();
         setDuels(data);
       } catch (err) {
@@ -32,7 +37,12 @@ const DuelHistory = ({ id }) => {
       const res = await fetch(`${backend_url}/api/duels/${id}/states`, {
         credentials: "include",
       });
-      if (!res.ok) throw new Error("Failed to fetch duel states");
+      if (!res.ok){
+        const errorData = await res.json();
+        console.error('API error:', errorData.detail || errorData.message || errorData);
+        alert(errorData.detail || 'An error occurred');
+        return;
+      }
       const data = await res.json();
       setDuelStates(data);
     } catch (err) {
@@ -81,6 +91,33 @@ const DuelHistory = ({ id }) => {
       } else if (rating >= 3000) {
           return '#AA0000';
       }
+  }
+
+  const getPerformanceColor = (data) => {
+    const rating = parseInt(data);
+    if (rating > 0 && rating < 1200) {
+        return '#808080';
+    } else if (rating >= 1200 && rating < 1400) {
+        return '#008000';
+    } else if (rating >= 1400 && rating < 1600) {
+        return '#03A89E';
+    } else if (rating >= 1600 && rating < 1900) {
+        return '#0000FF';
+    } else if (rating >= 1900 && rating < 2100) {
+        return '#AA00AA';
+    } else if (rating >= 2100 && rating < 2300) {
+        return '#FF8C00';
+    } else if (rating >= 2300 && rating < 2400) {
+        return '#FF8C00';
+    } else if (rating >= 2400 && rating < 2600) {
+        return '#FF0000';
+    } else if (rating >= 2600 && rating < 3000) {
+        return '#FF0000';
+    } else if (rating >= 3000) {
+        return '#FF0000';
+    } else {
+        return 'black';
+    }
   }
 
   if (!id) return <div>Loading...</div>;
@@ -148,6 +185,7 @@ const DuelHistory = ({ id }) => {
                       <Link
                         href={`/profile/${participant.id}`}
                         className="text-black-700 hover:underline"
+                        style={{color: getPerformanceColor(participant.rating)}}
                         >
                         {participant.codeforces_handle}
                         </Link>

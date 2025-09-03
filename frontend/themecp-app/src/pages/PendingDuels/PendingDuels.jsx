@@ -21,7 +21,10 @@ const PendingDuels = () => {
                 credentials: 'include',
         });
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          const errorData = await response.json();
+          console.error('API error:', errorData.detail || errorData.message || errorData);
+          alert(errorData.detail || 'An error occurred');
+          return;
         }
         const data = await response.json();
         setPendingDuels(data);
@@ -37,7 +40,12 @@ const PendingDuels = () => {
         const response = await fetch(`${backend_url}/api/duels/active`, {
           credentials: 'include',
         });
-        if (!response.ok) return;
+        if (!response.ok){
+          const errorData = await response.json();
+          console.error('API error:', errorData.detail || errorData.message || errorData);
+          // alert(errorData.detail || 'An error occurred');
+          return;
+        }
 
         const activeDuel = await response.json();
 
@@ -74,7 +82,9 @@ const PendingDuels = () => {
         // Remove the accepted request from the list
         setPendingDuels(pendingDuels.filter((request) => request.id !== Number(duelId)));
       } else {
-        alert('Failed to accept the request');
+        const errorData = await response.json();
+        console.error('API error:', errorData.detail || errorData.message || errorData);
+        alert(errorData.detail || 'couldn\'t accept the request');
       }
     } catch (error) {
       console.error('Error accepting request:', error);
@@ -92,7 +102,9 @@ const PendingDuels = () => {
         // Remove the rejected request from the list
         setPendingDuels(pendingDuels.filter((request) => request.id !== Number(duelId)));
       } else {
-        alert('Failed to reject the request');
+        const errorData = await response.json();
+        console.error('API error:', errorData.detail || errorData.message || errorData);
+        alert(errorData.detail || 'couldn\'t reject the request');
       }
     } catch (error) {
       console.error('Error rejecting request:', error);

@@ -22,17 +22,30 @@ const StartContest = () => {
   // let data = JSON.parse(localStorage.getItem('data'));
   const [data, setData] = useState({});
 
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const solved_data = JSON.parse(localStorage.getItem('solve_data')) || [true, false, false, false, false];
+  //     setSolved(solved_data);
+
+  //     const localData = JSON.parse(localStorage.getItem('data'));
+  //     setData(localData);
+  //     console.log('localData:', localData);
+  //   }
+  // }, []);
+
   useEffect(() => {
+    let solved_data
+    let localData
     if (typeof window !== "undefined") {
-      const solved_data = JSON.parse(localStorage.getItem('solve_data')) || [true, false, false, false, false];
+      solved_data = JSON.parse(localStorage.getItem('solve_data')) || [true, false, false, false, false];
       setSolved(solved_data);
 
-      const localData = JSON.parse(localStorage.getItem('data'));
+      localData = JSON.parse(localStorage.getItem('data'));
       setData(localData);
+      console.log('localData:', localData);
     }
-  }, []);
 
-  useEffect(() => {
+
     const twoMinute = localStorage.getItem('2min-endTime');
     if (twoMinute) {
       const time = new Date().getTime();
@@ -53,13 +66,14 @@ const StartContest = () => {
         // },
         credentials: 'include'
       }) .then((res) => res.json());
-      if (data.user_email !== check.email) {
+      if (localData.user_email !== check.email) {
+        console.log(localData.user_email, check.email);
         alert('Login back to the email in which you have started the contest');
         // navigate('/');
         router.push('/');
       } else {
-        data.handle = check.codeforces_handle;
-        localStorage.setItem('data', JSON.stringify(data));
+        localData.handle = check.codeforces_handle;
+        localStorage.setItem('data', JSON.stringify(localData));
       }
     };
     get_username();

@@ -23,7 +23,11 @@ const ImportExport = ({id}) => {
             credentials: 'include',
           });
           if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const errorData = await response.json();
+            // errorData.detail or errorData.message, depending on your API
+            console.error('API error:', errorData.detail || errorData.message || errorData);
+            alert(errorData.detail || 'An error occurred');
+            return;
           }
           const data = await response.json();
           setContestHistory(data);
@@ -38,7 +42,11 @@ const ImportExport = ({id}) => {
             credentials: 'include',
           });
           if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const errorData = await response.json();
+            // errorData.detail or errorData.message, depending on your API
+            console.error('API error:', errorData.detail || errorData.message || errorData);
+            alert(errorData.detail || 'An error occurred');
+            return;
           }
           const data = await response.json();
           setUsername(data);

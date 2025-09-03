@@ -97,7 +97,7 @@ const AddHandle = ({id}) => {
                 //console.log(res);
                 const frontend_url = process.env.NEXT_PUBLIC_FRONTEND_URL || "http://localhost:3000"; // Change this to your frontend URL
                 if(res.status===400 || res.status===500 || res.status===403 || res.status===404) {
-                        alert('couldnot add handle');
+                        alert(res['detail'] || res['message'] || 'couldnot add handle');
                         window.location.href = `${frontend_url}/profile/${id}`;
                 }
                 else if (res['message'] === 'handle already taken by another user') {

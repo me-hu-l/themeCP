@@ -39,7 +39,9 @@ const PendingRequests = ({id}) => {
         // Remove the accepted request from the list
         setPendingRequests(pending_requests.filter((request) => request.id !== Number(requestId)));
       } else {
-        alert('Failed to accept the request');
+        const errorData = await response.json();
+        console.error('API error:', errorData.detail || errorData.message || errorData);
+        alert(errorData.detail || 'couldn\'t accept the request');
       }
     } catch (error) {
       console.error('Error accepting request:', error);
@@ -59,12 +61,41 @@ const PendingRequests = ({id}) => {
         // Remove the rejected request from the list
         setPendingRequests(pending_requests.filter((request) => request.id !== Number(requestId)));
       } else {
-        alert('Failed to reject the request');
+        const errorData = await response.json();
+        console.error('API error:', errorData.detail || errorData.message || errorData);
+        alert(errorData.detail || 'couldn\'t reject the request');
       }
     } catch (error) {
       console.error('Error rejecting request:', error);
     }
   };
+
+  const getPerformanceColor = (data) => {
+    const rating = parseInt(data);
+    if (rating > 0 && rating < 1200) {
+        return '#808080';
+    } else if (rating >= 1200 && rating < 1400) {
+        return '#008000';
+    } else if (rating >= 1400 && rating < 1600) {
+        return '#03A89E';
+    } else if (rating >= 1600 && rating < 1900) {
+        return '#0000FF';
+    } else if (rating >= 1900 && rating < 2100) {
+        return '#AA00AA';
+    } else if (rating >= 2100 && rating < 2300) {
+        return '#FF8C00';
+    } else if (rating >= 2300 && rating < 2400) {
+        return '#FF8C00';
+    } else if (rating >= 2400 && rating < 2600) {
+        return '#FF0000';
+    } else if (rating >= 2600 && rating < 3000) {
+        return '#FF0000';
+    } else if (rating >= 3000) {
+        return '#FF0000';
+    } else {
+        return 'black';
+    }
+  }
 
 
 
@@ -86,7 +117,7 @@ const PendingRequests = ({id}) => {
             <tr key={index} className="hover:bg-gray-50">
               <td className="border border-gray-300 px-4 py-2">{pending_requests.length - index}</td>
               <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
-                <Link href={`/profile/${item.id}`} className="text-black-700 hover:underline font-bold">
+                <Link href={`/profile/${item.id}`} className="text-black-700 hover:underline font-bold" style={{color: getPerformanceColor(item.rating)}}>
                   {item.codeforces_handle}
                 </Link>
               </td>

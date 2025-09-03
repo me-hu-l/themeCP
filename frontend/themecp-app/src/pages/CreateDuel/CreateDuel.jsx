@@ -99,7 +99,10 @@ const CreateDuel = () => {
                                         credentials: 'include',
                                 });
                                 if (!response.ok) {
-                                        throw new Error('Network response was not ok');
+                                        const errorData = await response.json();
+                                        console.error('API error:', errorData.detail || errorData.message || errorData);
+                                        // alert(errorData.detail || 'An error occurred');
+                                        return;
                                 }
                                 const data = await response.json();
                                 setFriendsList(data);
@@ -168,7 +171,7 @@ const CreateDuel = () => {
                                 // router.push(`/duel/${data.duel_id}`);
                         } else {
                                 setLoading(false);
-                                alert(data.detail || 'Failed to create duel. Please try again.');
+                                alert(data.detail || data.message || 'Failed to create duel. Please try again.');
                         }
                 } catch (error) {
                         setLoading(false);
@@ -197,7 +200,7 @@ const CreateDuel = () => {
                                 alert('Duel invite canceled successfully.');
                         } else {
                                 setLoading(false);
-                                alert(data.detail || 'Failed to cancel duel. Please try again.');
+                                alert(data.detail || data.message || 'Failed to cancel duel. Please try again.');
                         }
                 } catch (error) {
                         setLoading(false);
