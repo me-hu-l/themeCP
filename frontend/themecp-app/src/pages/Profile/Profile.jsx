@@ -260,7 +260,7 @@ const Profile = ({id}) => {
         <div className="flex items-center gap-2">
           <img src="/mail.png" alt="mail" className="w-5 h-5" />
           <span className="font-normal">Email:</span>
-          <span className="font-semibold">{user_profile !== null ? user_profile.email : 'Email'}</span>
+          <span className="font-semibold">{((user_profile!==null && loggedInUserProfile !== null && user_profile.id === loggedInUserProfile.id)) ? user_profile.email : 'Email'}</span>
         </div>
       </div>
       {loggedInUserProfile.id !== Number(id) && (
