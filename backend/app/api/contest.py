@@ -119,6 +119,11 @@ async def create_contest(
         delta = int(max(-200, min(200, k * gap / 400)))
         rating = max(0, prev_rating + delta)
 
+    # print("ratings:", ratings)
+    # print("times:", times)
+    # print("solved_count:", solved_count)
+    # print("performance:", performance)
+
 
     performance = int(performance)
     delta = int(delta)

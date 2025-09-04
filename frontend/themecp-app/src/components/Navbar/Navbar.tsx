@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import logo from "../../../public/logo1.png";
+import logo from "../../../public/levelupcplogo.png";
 import LogIn from "../UserButton/Login";
 import Logout from "../UserButton/Logout";
 import { useProfile } from "@/context/ProfileContext/ProfileContext";
@@ -28,7 +28,7 @@ const Navbar = () => {
         onClick={() => router.push("/")}
         aria-label="Go home"
       >
-        <Image src={logo} alt="ThemeCP logo" className="w-[200px] cursor-pointer max-[730px]:w-[100px]" priority />
+        <Image src={logo} alt="LevelUp CP logo" className="w-[200px] cursor-pointer max-[730px]:w-[100px]" priority />
       </button>
 
       

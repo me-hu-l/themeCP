@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="levelupcplogo.png" alt="LevelUpCP Logo" width="300">
+  <img src="demo/levelupcplogo.png" alt="LevelUpCP Logo" width="300">
 </p>
 
 <h1 align="center">LevelUpCP</h1>
@@ -15,21 +15,67 @@
 
 - **Level-based Progression:** 109 levels to gradually improve problem-solving skills.
 - **Virtual Contests:** 4-problem contests with a 120-minute timer.
-- **Friends & 1v1 Challenges:** Compete with friends in real-time.
+- **Friends & 1v1 Challenges(Duels):** Compete with friends in real-time.
 - **Performance Tracking:** Local rating, contest history, and deltas stored for every attempt.
 - **Tag-based Practice:** Choose mixed contests or focus on specific topics like DP, Greedy, etc.
 
 ---
 
+---
+
 ## 🖼️ Demo
 
-| Home Page | Contest Page | 1v1 Challenge |
-|----------|-------------|--------------|
-| ![Home](demo/home.png) | ![Contest](demo/contest.png) | ![Challenge](demo/challenge.png) |
+### 👤 Profile Page  
+Login with your Google account and add your Codeforces handle to personalize your experience.
 
-> (Add screenshots of your app's key pages inside a `/demo` folder in the repo)
+<p align="center">
+  <img src="demo/Profile_demo.png" alt="Profile Demo" width="700">
+</p>
 
 ---
+
+### 📜 History  
+Track your past **contests** and **1v1 duels** with detailed performance stats.
+
+<p align="center">
+  <img src="demo/Contest_history.png" alt="Contest History" width="400">
+  <img src="demo/Duel_history.png" alt="Duel History" width="400">
+</p>
+
+---
+
+### 🎯 Create  
+Host local contests and duels with friends — choose levels and topics (just like ThemeCP!).
+
+<p align="center">
+  <img src="demo/Contest.png" alt="Create Contest" width="400">
+  <img src="demo/CreateDuel.png" alt="Create Duel" width="400">
+</p>
+
+---
+
+### ⚔️ Compete  
+Solve theme-based contests progressively, or challenge your friends to a **1v1 duel**.  
+Both participants’ Codeforces submissions are tracked in **real-time** and scores are updated live.
+
+<p align="center">
+  <img src="demo/StartContest.png" alt="Start Contest" width="400">
+  <img src="demo/ActiveDuel.png" alt="Active Duel" width="400">
+</p>
+
+---
+
+### 🤝 Friends  
+Search for your friends, view their profiles, and add them to challenge them to duels.
+
+<p align="center">
+  <img src="demo/SearchFriend.png" alt="Search Friend" width="400">
+  <img src="demo/AddFriend.png" alt="Add Friend" width="400">
+</p>
+
+---
+
+
 
 ## 🛠️ Tech Stack
 
