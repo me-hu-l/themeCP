@@ -8,6 +8,8 @@ import axios from "axios";
 const ContestHistory = ({id}) => {
 
   const [user_contest, setContestHistory] = useState([]);
+  const [user_profile, setUserProfile] = useState(null);
+  const backend_url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"; // Fallback to local URL if env variable is not set
   // const contest_history = useContext(UserContestHistory);
   // useEffect(() => {
   //     setContestHistory(() => contest_history.user_contest);
@@ -27,7 +29,80 @@ const ContestHistory = ({id}) => {
                 console.error("Error fetching user contest history:", error);
                 setContestHistory([]); // Set to empty array on error
             });
-  },[])
+    }, [id]);
+
+
+    useEffect(()=>{
+      axios.get(`${backend_url}/api/users/profile/${id}`, {
+          withCredentials: true
+      }).then((res) => setUserProfile(res.data))
+        .catch((error) => {
+            console.error("Error fetching user profile:", error);
+            setUserProfile(null);
+        });
+    }, [id, backend_url]);
+
+  useEffect(() => {
+    // Any additional effects can be added here
+    if(user_contest === null || user_profile === null) return;
+    if(user_profile.codeforces_handle === null || user_profile.codeforces_handle === undefined || user_profile.codeforces_handle === "") return;
+
+    const upsolve = async(contest_id, slot)=>{
+      try{
+        const response = await fetch(`${backend_url}/api/contests/upsolve/${contest_id}?slot=${slot}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include'
+        });
+        const data = await response.json();
+        if(!response.ok){
+          console.error("Error fetching upsolve status:", data);
+        }
+      } catch (error) {
+        console.error("Error checking upsolve status:", error);
+      }
+    }
+    const check_upsolve= async()=>{
+      try {
+        const response = await fetch(`https://codeforces.com/api/user.status?handle=${user_profile.codeforces_handle}&from=1&count=20`, { 
+          method: 'GET',
+          
+        });
+        const data = await response.json();
+        if(!response.ok){
+          console.error("Error fetching upsolve status:", data);
+        }
+        if(data.status !== "OK"){
+          console.error("Error fetching upsolve status:", data);
+        }
+        const submissions = data.result;
+        let solved_problems = new Set();
+        submissions.forEach(submission => {
+          if (submission.verdict === "OK") {
+            // console.log("Solved problem:", submission.problem);
+            solved_problems.add(`${submission.problem.contestId}-${submission.problem.index}`);
+          }
+        });
+        let latest_contest = user_contest[0];
+        // console.log(solved_problems);
+
+        [1, 2, 3, 4].map((problemIndex) => {
+          if (latest_contest[`T${problemIndex}`]===null && solved_problems.has(`${latest_contest[`contestId${problemIndex}`]}-${latest_contest[`index${problemIndex}`]}`)) {
+            // Problem is solved in this contest
+            upsolve(latest_contest.id, problemIndex);
+          }
+        });
+      // Handle the response as needed
+    } catch (error) {
+      console.error("Error checking upsolve status:", error);
+    }
+  }
+
+  check_upsolve()
+
+  }, [user_contest, user_profile])
 
   function getDeltaColor(data) {
     if (data === 0)
@@ -124,7 +199,7 @@ const ContestHistory = ({id}) => {
         <div style={{alignItems:'center',height:'35px',display:'flex', justifyContent:'center'}}>Δ</div>  
       </div>
 
-        {
+        { 
           user_contest.map((item, index) => (
             <div className='contest-history-table-data' key={index}>
               <div style={{alignItems:'center', height: '30px',borderRight: '2px solid black', display:'flex', justifyContent:'center'}}>{item.contest_no }</div>

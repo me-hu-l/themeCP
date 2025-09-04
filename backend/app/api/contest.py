@@ -67,38 +67,47 @@ async def create_contest(
     )
     contests = result.scalars().all()
 
+    duration = LEVEL_RATING_MAP[contest.level]["Duration"]
+
     num_contests = len(contests)
     current_date = datetime.now().strftime("%Y-%m-%d")
 
-    # Calculate average problem rating (for expected performance)
     problem_ratings = [r for r in [contest.R1, contest.R2, contest.R3, contest.R4] if r is not None]
     avg_problem_rating = float(sum(problem_ratings) / len(problem_ratings)) if problem_ratings else 0.0
 
-    # Calculate performance
-    solved_ratings = []
+    # ---- Performance calculation ----
+    solved = []
+    total_weight = 0
     for i in range(1, 5):
-        t = getattr(contest, f"T{i}", None)
         r = getattr(contest, f"R{i}", None)
-        if t is not None and t != 0 and r is not None:
-            solved_ratings.append(r)
-    performance = float(sum(solved_ratings) / len(solved_ratings)) if solved_ratings else 0.0
+        t = getattr(contest, f"T{i}", None)
+        if r is not None and t is not None and t > 0:  # solved
+            speed_bonus = (duration - t) / duration   # assuming duration minutes total
+            weight = 1 + 0.3 * speed_bonus
+            solved.append(r * weight)
+            total_weight += weight
 
-    # Calculate rating and delta
+    performance = int(sum(solved) / total_weight) if solved else 0
+
+    # ---- Elo-like rating calculation ----
     if num_contests == 0:
-        rating = int(performance)
+        rating = performance
         delta = 0
     else:
-        prev_contest = contests[0]  # contests are ordered by contest_no desc
-        prev_rating = prev_contest.rating if prev_contest.rating is not None else 0
-        # Elo-like delta calculation
-        k = 40  # You can tune this
+        prev_rating = contests[0].rating or 0
+        total_rating_sum = sum(problem_ratings)
+        solved_rating_sum = sum([getattr(contest, f"R{i}", 0) for i in range(1, 5) if getattr(contest, f"T{i}", None)])
+
+        actual = solved_rating_sum / total_rating_sum if total_rating_sum > 0 else 0
         expected = 1 / (1 + math.pow(10, (avg_problem_rating - prev_rating) / 400))
-        actual = 1 if performance >= avg_problem_rating else (performance / avg_problem_rating if avg_problem_rating > 0 else 0)
-        delta = k * (actual - expected)
-        delta = int(delta)
-        rating = prev_rating + delta
+
+        k = 40
+        delta = int(k * (actual - expected))
+        rating = max(0, prev_rating + delta)
 
     performance = int(performance)
+    delta = int(delta)
+    rating = int(rating)
 
     # Create a new contest
     new_contest = Contest(
@@ -133,3 +142,41 @@ async def create_contest(
     await db.refresh(new_contest)
 
     return new_contest
+
+
+@router.post("/upsolve/{contest_id}")
+async def upsolve_contest(
+    slot: int,
+    contest_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    # Fetch the contest to be upsolved
+    contest = await db.get(Contest, contest_id)
+    if not contest:
+        raise HTTPException(status_code=404, detail="Contest not found")
+
+    # Check if the current user is the owner of the contest
+    if contest.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to upsolve this contest")
+    
+    if slot not in [1, 2, 3, 4]:
+        raise HTTPException(status_code=400, detail="Invalid problem slot. Must be 1, 2, 3, or 4.")
+
+    # Perform the upsolve operation (e.g., re-evaluate the contest)
+    # ...
+    # contest[f'T{slot}'] = -1  # Reset time for the specified problem slot
+    if slot == 1:
+        contest.T1 = -1
+    elif slot == 2:
+        contest.T2 = -1
+    elif slot == 3:
+        contest.T3 = -1
+    elif slot == 4:
+        contest.T4 = -1
+
+    await db.commit()
+    await db.refresh(contest)
+
+
+    return {"message": "Contest upsolved successfully"}

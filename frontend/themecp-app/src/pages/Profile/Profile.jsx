@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useContext, useEffect, useState } from 'react'
-import './Profile.css'
+// import './Profile.css'
 import rating_pic from '../../../public/rating.png'
 import star from '../../../public/star.png'
 import ChartData from '../../components/Chart/ChartData'
