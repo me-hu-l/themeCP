@@ -72,38 +72,53 @@ async def create_contest(
     num_contests = len(contests)
     current_date = datetime.now().strftime("%Y-%m-%d")
 
-    problem_ratings = [r for r in [contest.R1, contest.R2, contest.R3, contest.R4] if r is not None]
-    avg_problem_rating = float(sum(problem_ratings) / len(problem_ratings)) if problem_ratings else 0.0
-
-    # ---- Performance calculation ----
-    solved = []
-    total_weight = 0
-    for i in range(1, 5):
-        r = getattr(contest, f"R{i}", None)
-        t = getattr(contest, f"T{i}", None)
-        if r is not None and t is not None and t > 0:  # solved
-            speed_bonus = (duration - t) / duration   # assuming duration minutes total
-            weight = 1 + 0.3 * speed_bonus
-            solved.append(r * weight)
-            total_weight += weight
-
-    performance = int(sum(solved) / total_weight) if solved else 0
-
-    # ---- Elo-like rating calculation ----
     if num_contests == 0:
-        rating = performance
-        delta = 0
+        prev_rating = 0
     else:
         prev_rating = contests[0].rating or 0
-        total_rating_sum = sum(problem_ratings)
-        solved_rating_sum = sum([getattr(contest, f"R{i}", 0) for i in range(1, 5) if getattr(contest, f"T{i}", None)])
 
-        actual = solved_rating_sum / total_rating_sum if total_rating_sum > 0 else 0
-        expected = 1 / (1 + math.pow(10, (avg_problem_rating - prev_rating) / 400))
+    ratings = [contest.R1, contest.R2, contest.R3, contest.R4]
+    times = [contest.T1, contest.T2, contest.T3, contest.T4]
 
-        k = 40
-        delta = int(k * (actual - expected))
+    # Determine how many problems solved (prefix)
+    solved_count = 0
+    total_time = 0
+    for r, t in zip(ratings, times):
+        if r is not None and t and t > 0:
+            solved_count += 1
+            total_time += t
+        else:
+            break  # prefix only
+
+    if solved_count == 0:
+        performance = 800
+    else:
+        # Select lower/upper bounds based on solved count
+        if solved_count == 1:
+            lower, upper = ratings[0], ratings[1]
+        elif solved_count == 2:
+            lower, upper = ratings[1], ratings[2]
+        elif solved_count == 3:
+            lower, upper = ratings[2], ratings[3]
+        else:  # solved all 4
+            lower, upper = ratings[3], ratings[3] + 300
+
+        # Time factor (0 = very slow, 1 = very fast)
+        max_time = solved_count * duration
+        speed_score = max(0.0, min(1.0, (max_time - total_time) / max_time))
+
+        performance = lower + speed_score * (upper - lower)
+
+    # --- Rating update ---
+    if num_contests == 0:
+        rating = int(performance)
+        delta = 0
+    else:
+        gap = performance - prev_rating
+        k = 40 + min(60, abs(gap) / 10)
+        delta = int(max(-200, min(200, k * gap / 400)))
         rating = max(0, prev_rating + delta)
+
 
     performance = int(performance)
     delta = int(delta)

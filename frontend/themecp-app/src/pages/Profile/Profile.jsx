@@ -224,6 +224,77 @@ const Profile = ({id}) => {
 
 
     return (
+  <div className="flex flex-col md:flex-row w-full min-h-screen bg-gray-50 py-6 px-2 gap-6">
+    {/* Profile Box (left) */}
+    <div className="w-full md:max-w-sm bg-white border-2 border-gray-300 rounded-xl shadow p-6 flex flex-col gap-3 self-start">
+      <span className="text-xl font-semibold mb-1" style={{ color: getBackgroundColor(rating) }}>
+        {getRatingName(rating)}
+      </span>
+      <div
+        className="font-bold text-3xl break-words flex items-center min-h-[48px] mb-2"
+        style={{ color: getBackgroundColor(rating) }}
+      >
+        {(user_profile !== null && user_profile.codeforces_handle !== null)
+          ? user_profile.codeforces_handle
+          : <AddHandle id={id} />}
+      </div>
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <img src="/rating.png" alt="rating" className="w-5 h-5" />
+          <span className="font-normal">Contest Rating:</span>
+          <span className="font-semibold" style={{ color: getBackgroundColor(rating) }}>{rating}</span>
+          <span className="text-sm text-gray-500 ml-2">
+            (max. <span style={{ color: getBackgroundColor(maxRating) }}>{getRatingName(maxRating).toLocaleLowerCase()}, {maxRating}</span>)
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <img src="/star.png" alt="star" className="w-5 h-5" />
+          <span className="font-normal">Best Performance:</span>
+          <span className="font-semibold" style={{ color: getBackgroundColor(best_performance) }}>{best_performance}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <img src="/star.png" alt="star" className="w-5 h-5" />
+          <span className="font-normal">Contest Attempt:</span>
+          <span className="font-semibold">{contestAttempt}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <img src="/mail.png" alt="mail" className="w-5 h-5" />
+          <span className="font-normal">Email:</span>
+          <span className="font-semibold">{user_profile !== null ? user_profile.email : 'Email'}</span>
+        </div>
+      </div>
+      {loggedInUserProfile.id !== Number(id) && (
+        <button
+          onClick={handleFriendRequest}
+          className={`mt-4 rounded-md px-6 py-2 text-base font-semibold
+            ${friendStatus === 'pending' ? 'bg-yellow-500' : friendStatus === 'accepted' ? 'bg-red-600' : 'bg-cyan-500'} text-white transition cursor-pointer hover:opacity-90`}
+        >
+          {friendStatus === 'add' ? 'Add Friend' : friendStatus === 'pending' ? 'Pending' : 'Remove Friend'}
+        </button>
+      )}
+    </div>
+
+    {/* Charts (right or below on mobile) */}
+    <div className="flex-1 flex flex-col gap-6">
+      <div className="bg-white border-2 border-gray-300 rounded-xl shadow p-6 flex flex-col">
+        <div className="flex items-center mb-4">
+          <input type="checkbox" checked={isChecked} onChange={handleCheckBox} className="mr-2" />
+          <span className="text-base">Plot CF rating graph</span>
+        </div>
+        {user_contest === null
+          ? <div className="text-center text-gray-400">Loading...</div>
+          : <ChartData user_contest={user_contest} cf_contest={isChecked ? cf_contest : []} />}
+      </div>
+      <div className="bg-white border-2 border-gray-300 rounded-xl shadow p-6 flex flex-col">
+        {user_contest === null
+          ? <div className="text-center text-gray-400">Loading...</div>
+          : <PieData user_contest={user_contest} />}
+      </div>
+    </div>
+  </div>
+);
+
+    return (
         <div className="flex flex-col md:flex-row">
             <div>
                 <div className="w-[1020px] h-[320px] border-2 border-gray-500 mt-2 ml-[30px] rounded-[10px] pl-[25px] 

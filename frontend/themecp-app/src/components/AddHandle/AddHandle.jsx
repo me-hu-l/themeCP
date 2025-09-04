@@ -112,6 +112,47 @@ const AddHandle = ({id}) => {
         }
     }, [handle]);
 
+    return (
+  <div className="flex flex-col gap-4 w-full max-w-md bg-white rounded-lg shadow p-6 border border-gray-200">
+    <div className="flex flex-col gap-2">
+      <input
+        disabled={checking}
+        type="text"
+        className="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+        placeholder="Codeforces Handle..."
+        ref={get_handle}
+      />
+      <button
+        disabled={checking}
+        onClick={addHandle}
+        className={`px-4 py-2 rounded font-semibold transition 
+          ${checking ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"}`}
+      >
+        Add Handle
+      </button>
+    </div>
+    <div className="mt-2 text-sm text-gray-700">
+      {Loading ? (
+        <span className="animate-pulse">Loading...</span>
+      ) : (
+        problemLink !== null && (
+          <a
+            href={problemLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 underline font-medium"
+          >
+            CLICK HERE: Submit a COMPILATION_ERROR within 1 minute.<br /> DO NOT REFRESH OR CHANGE THE PAGE
+          </a>
+        )
+      )}
+    </div>
+  </div>
+)
+ 
+ 
+ 
+
   return (
     <div>
         <input disabled={checking} type='text' className='handle-input' placeholder='Codeforces Handle...' ref={get_handle}></input>

@@ -242,6 +242,136 @@ const CreateDuel = () => {
                 check()
         },[duelCreated, countDown, endCountDown])
 
+
+        return (
+  <div className="flex justify-center items-start min-h-screen bg-gray-50 py-10">
+    <div className="w-full max-w-2xl bg-white border-2 border-gray-300 rounded-xl shadow-lg p-8 relative">
+      {/* Friend Dropdown */}
+      <div className="mb-6">
+        <button
+          disabled={duelCreated}
+          className="w-full py-3 px-4 text-lg font-semibold rounded-lg border border-gray-300 bg-gray-100 hover:bg-gray-200 transition"
+          onClick={() => setIsFriendsDropdownOpen(!isFriendsDropdownOpen)}
+        >
+          {selectFriend ? `Friend : ${selectFriend}` : 'Select Friend'}
+        </button>
+        {isFriendsDropdownOpen && (
+          <div className="absolute mt-2 left-0 w-full max-w-xs bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+            <ul className="max-h-48 overflow-y-auto py-2">
+              {friendsList.map((friend) => (
+                <li key={friend.codeforces_handle} className="px-4 py-2 hover:bg-gray-100">
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      checked={selectFriend === friend.codeforces_handle}
+                      onChange={() => handleFriendSelect(friend.codeforces_handle)}
+                      className="mr-2"
+                    />
+                    <span className="font-medium">{friend.codeforces_handle}</span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {/* Duel Level Input */}
+      <div className="flex items-center mb-6">
+        <label className="font-semibold text-lg mr-3">Enter Duel Level:</label>
+        <input
+          disabled={duelCreated}
+          maxLength={3}
+          onChange={handleChange}
+          ref={problemLevel}
+          type="text"
+          className="px-4 py-2 border border-gray-300 rounded-lg w-40 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="Ex: 23.."
+        />
+      </div>
+
+      {/* Tag Dropdown */}
+      <div className="mb-6">
+        <button
+          disabled={duelCreated}
+          className="w-full py-3 px-4 text-lg font-semibold rounded-lg border border-gray-300 bg-gray-100 hover:bg-gray-200 transition"
+          onClick={() => setIsTagDropdownOpen(!isTagDropdownOpen)}
+        >
+          {selectTag ? `Theme : ${selectTag}` : 'Select Theme'}
+        </button>
+        {isTagDropdownOpen && (
+          <div className="absolute mt-2 left-0 w-full max-w-xs bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+            <ul className="max-h-48 overflow-y-auto py-2">
+              {tags.map((tag) => (
+                <li key={tag} className="px-4 py-2 hover:bg-gray-100">
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      checked={selectTag === tag}
+                      onChange={() => handleTagSelect(tag)}
+                      className="mr-2"
+                    />
+                    <span className="font-medium">{tag}</span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {/* Problem Ratings */}
+      <div className="mb-8">
+        <div className="font-semibold text-lg mb-2">Problem Rating:</div>
+        <div className="flex gap-4">
+          {problemArray.map((problem, index) => (
+            <div
+              key={index}
+              ref={divVal[index]}
+              className="flex items-center justify-center w-32 h-12 rounded-lg border border-gray-300 font-bold text-base"
+              style={{ backgroundColor: getBackgroundColor(problemArray[index]) }}
+            >
+              {problemArray[index]}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Duel Actions */}
+      {duelCreated ? (
+        <>
+          <div className="mt-6 text-red-600 font-semibold text-base" ref={timer_data}>
+            {Loading ? 'Loading...' : 'Duel expires after 10 minutes of invitation being sent and not accepted'}
+          </div>
+          <button
+            onClick={cancelDuel}
+            className="mt-6 w-full py-3 rounded-lg font-bold text-white bg-blue-500 hover:bg-white hover:text-blue-500 border border-blue-500 transition"
+            style={{ marginLeft: '20px' }}
+          >
+            Cancel Duel Invite
+          </button>
+        </>
+      ) : (
+        <>
+          {Loading ? (
+            <div className="mt-10 text-lg font-bold text-red-500">Generating Duel...</div>
+          ) : (
+            <div className="flex justify-center mt-8">
+              <button
+                onClick={createDuel}
+                className="w-48 py-3 rounded-lg font-bold text-white bg-blue-500 hover:bg-white hover:text-blue-500 border border-blue-500 transition"
+              >
+                Create Duel
+              </button>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  </div>
+);
+
+
         return (
     <center>
       <div className='main-container'>

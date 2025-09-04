@@ -179,6 +179,131 @@ const ContestHistory = ({id}) => {
   }
 
   return (
+  <div className="w-full max-w-[1400px] mt-10 mx-auto">
+    <h2 className="text-3xl font-bold mb-4">Contest History</h2>
+    <div className="overflow-x-auto rounded-xl border border-black">
+      <div className="grid grid-cols-15 bg-gray-100 font-semibold text-center text-base border-b border-black">
+        <div className="py-3 border-r border-black">ID</div>
+        <div className="py-3 border-r border-black">Date</div>
+        <div className="py-3 border-r border-black">Topic</div>
+        <div className="py-3 border-r border-black">Level</div>
+        <div className="py-3 border-r border-black">R1</div>
+        <div className="py-3 border-r border-black">R2</div>
+        <div className="py-3 border-r border-black">R3</div>
+        <div className="py-3 border-r border-black">R4</div>
+        <div className="py-3 border-r border-black">T1</div>
+        <div className="py-3 border-r border-black">T2</div>
+        <div className="py-3 border-r border-black">T3</div>
+        <div className="py-3 border-r border-black">T4</div>
+        <div className="py-3 border-r border-black">Perf</div>
+        <div className="py-3 border-r border-black">Rating</div>
+        <div className="py-3">Δ</div>
+      </div>
+      {user_contest.map((item, index) => (
+        <div
+          className="grid grid-cols-15 text-center text-sm border-b border-black last:border-b-0"
+          key={index}
+        >
+          <div className="py-2 border-r border-black">{item.contest_no}</div>
+          <div className="py-2 border-r border-black whitespace-nowrap">{item.date}</div>
+          <div className="py-2 border-r border-black whitespace-nowrap">{item.topic}</div>
+          <div className="py-2 border-r border-black">{item.contest_level}</div>
+          <div
+            className="py-2 border-r border-black font-bold underline"
+            style={{ backgroundColor: getBackgroundColor(item.R1) }}
+          >
+            <a
+              href={`https://codeforces.com/problemset/problem/${item.contestId1}/${item.index1}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-700 underline"
+            >
+              {item.R1}
+            </a>
+          </div>
+          <div
+            className="py-2 border-r border-black font-bold underline"
+            style={{ backgroundColor: getBackgroundColor(item.R2) }}
+          >
+            <a
+              href={`https://codeforces.com/problemset/problem/${item.contestId2}/${item.index2}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-700 underline"
+            >
+              {item.R2}
+            </a>
+          </div>
+          <div
+            className="py-2 border-r border-black font-bold underline"
+            style={{ backgroundColor: getBackgroundColor(item.R3) }}
+          >
+            <a
+              href={`https://codeforces.com/problemset/problem/${item.contestId3}/${item.index3}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-700 underline"
+            >
+              {item.R3}
+            </a>
+          </div>
+          <div
+            className="py-2 border-r border-black font-bold underline"
+            style={{ backgroundColor: getBackgroundColor(item.R4) }}
+          >
+            <a
+              href={`https://codeforces.com/problemset/problem/${item.contestId4}/${item.index4}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-700 underline"
+            >
+              {item.R4}
+            </a>
+          </div>
+          <div
+            className="py-2 border-r border-black"
+            style={{ backgroundColor: getSolvedColor(item.T1) }}
+          >
+            {item.T1 === null ? 'null' : Number(item.T1) === -1 ? '*' : item.T1}
+          </div>
+          <div
+            className="py-2 border-r border-black"
+            style={{ backgroundColor: getSolvedColor(item.T2) }}
+          >
+            {item.T2 === null ? 'null' : Number(item.T2) === -1 ? '*' : item.T2}
+          </div>
+          <div
+            className="py-2 border-r border-black"
+            style={{ backgroundColor: getSolvedColor(item.T3) }}
+          >
+            {item.T3 === null ? 'null' : Number(item.T3) === -1 ? '*' : item.T3}
+          </div>
+          <div
+            className="py-2 border-r border-black"
+            style={{ backgroundColor: getSolvedColor(item.T4) }}
+          >
+            {item.T4 === null ? 'null' : Number(item.T4) === -1 ? '*' : item.T4}
+          </div>
+          <div
+            className="py-2 border-r border-black font-bold"
+            style={{ color: getPerformanceColor(item.performance) }}
+          >
+            ~{item.performance}
+          </div>
+          <div className="py-2 border-r border-black">{item.rating}</div>
+          <div
+            className="py-2 font-bold"
+            style={{ color: getDeltaColor(item.delta) }}
+          >
+            {getSign(item.delta)}{item.delta}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+  return (
     <div className='contest-history-container'>
       Contest History
       <div className='contest-history-table'>
