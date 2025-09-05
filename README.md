@@ -28,9 +28,10 @@
 ### 🖼️ Demo Video
 
 <p align="center">
-  <video src="demo/Demo_video.mp4" width="700" controls>
+  [Watch Demo Video](https://github.com/me-hu-l/themeCP/raw/b42889d3bd3de5520fee1d3028392afd2d0cf50a/demo/Demo_video.mp4)
+<!--   <video src="demo/Demo_video.mp4" width="700" controls>
     Your browser does not support the video tag.
-  </video>
+  </video> -->
 </p>
 
 ---
@@ -105,4 +106,5 @@ Clone the repo and start both frontend and backend locally.
 ```bash
 git clone https://github.com/<your-username>/themecp.git
 cd themecp
+
 
