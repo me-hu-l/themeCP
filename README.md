@@ -28,7 +28,7 @@
 ### 🖼️ Demo Video
 
 <p align="center">
-  <video src="demo/LevelUpCP_Demo.mp4" width="700" controls>
+  <video src="demo/Demo_video.mp4" width="700" controls>
     Your browser does not support the video tag.
   </video>
 </p>
@@ -105,3 +105,4 @@ Clone the repo and start both frontend and backend locally.
 ```bash
 git clone https://github.com/<your-username>/themecp.git
 cd themecp
+
