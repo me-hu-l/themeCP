@@ -25,6 +25,17 @@
 
 ## 🖼️ Demo
 
+### 🖼️ Demo Video
+
+<p align="center">
+  <video src="demo/LevelUpCP_Demo.mp4" width="700" controls>
+    Your browser does not support the video tag.
+  </video>
+</p>
+
+---
+
+
 ### 👤 Profile Page  
 Login with your Google account and add your Codeforces handle to personalize your experience.
 
