@@ -84,7 +84,7 @@ async def create_contest(
     solved_count = 0
     total_time = 0
     for r, t in zip(ratings, times):
-        if r is not None and t and t > 0:
+        if r is not None and t is not None:
             solved_count += 1
             total_time += t
         else:
