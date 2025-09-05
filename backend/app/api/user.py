@@ -77,7 +77,10 @@ async def logout():
     resp = JSONResponse(content={"message": "Logged out"})
     resp.delete_cookie(
         key="token",
-        path="/"
+        path="/",
+        samesite="none",
+        secure=True,
+        httponly=True
     )
     return resp
 
